@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Stock</title>
+</head>
+<body>
+    <h2>Search Stock</h2>
+    <form id="searchForm">
+        <label for="stockname">Stock Name:</label>
+        <input type="text" id="stockname" name="stockname" /><br /><br />
+
+        <label for="pricedate">Price Date:</label>
+        <input type="date" id="pricedate" name="pricedate" /><br /><br />
+
+        <button type="button" onclick="searchStock()">Search Stock</button>
+    </form>
+
+    <h3>Stock Results:</h3>
+    <table id="resultsTable" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Stock Name</th>
+                <th>Price Date</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Volume</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Results will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        function searchStock() {
+            const formData = new FormData(document.getElementById('searchForm'));
+            fetch('/stocks/search?' + new URLSearchParams(formData), {
+                method: 'GET',
+            }).then(response => response.json())
+              .then(data => {
+                  const resultsTableBody = document.querySelector('#resultsTable tbody');
+                  resultsTableBody.innerHTML = ''; // Clear previous results
+                  data.stocks.forEach(stock => {
+                      const row = document.createElement('tr');
+                      row.innerHTML = `
+                          <td>${stock.id}</td>
+                          <td>${stock.stockname}</td>
+                          <td>${stock.pricedate}</td>
+                          <td>${stock.price}</td>
+                          <td>${stock.quantity}</td>
+                          <td>${stock.volume}</td>
+                          <td>
+                              <button onclick="deleteStock(${stock.id})">Delete</button>
+                          </td>
+                      `;
+                      resultsTableBody.appendChild(row);
+                  });
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+                  alert('Error searching stock.');
+              });
+        }
+
+        function deleteStock(stockId) {
+            fetch('/stocks/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: stockId })
+            }).then(response => {
+                if (response.ok) {
+                    alert('Stock deleted successfully!');
+                    searchStock(); // Refresh the search results
+                } else {
+                    alert('Error deleting stock.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Error deleting stock.');
+            });
+        }
+    </script>
+</body>
+</html>
