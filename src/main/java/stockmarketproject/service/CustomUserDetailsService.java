@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.crud.exception.ResourceNotFoundException;
 
 import stockmarketproject.dto.StockMarket;
 import stockmarketproject.dto.User;
@@ -100,7 +99,7 @@ public abstract class CustomUserDetailsService implements StockMarketService {
       if (stockMarketDb.isPresent()) {
           this.stockMarketRepository.delete(stockMarketDb.get());
       } else {
-          throw new ResourceNotFoundException("Record not found with id : " + id);
+          throw new UsernameNotFoundException("Record not found with id : " + id);
       }
       
   }
@@ -114,7 +113,7 @@ public abstract class CustomUserDetailsService implements StockMarketService {
         if (stockMarketDb.isPresent()) {
             return stockMarketDb.get();
         } else {
-            throw new ResourceNotFoundException("Record stockMarket data not found with id : " + id);
+            throw new UsernameNotFoundException("Record stockMarket data not found with id : " + id);
         }
     }
 	
@@ -137,7 +136,7 @@ public abstract class CustomUserDetailsService implements StockMarketService {
 	            stockMarketRepository.save(stockMarketUpdate);
 	            return stockMarketUpdate;
 	        } else {
-	            throw new ResourceNotFoundException("StockMarket data not found with id : " + stockMarket.getId());
+	            throw new UsernameNotFoundException("StockMarket data not found with id : " + stockMarket.getId());
 	        }
 	    }
 

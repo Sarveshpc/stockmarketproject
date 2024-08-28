@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import com.crud.entity.Product;
-import com.crud.exception.ResourceNotFoundException;
-
 import jakarta.transaction.Transactional;
 import stockmarketproject.dto.StockMarket;
 import stockmarketproject.exception.UsernameNotFoundException;

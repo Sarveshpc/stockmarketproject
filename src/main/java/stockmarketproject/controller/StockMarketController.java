@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.entity.Product;
-
 import stockmarketproject.dto.StockMarket;
 import stockmarketproject.repositories.StockMarketRepositories;
 import stockmarketproject.service.StockMarketService;
@@ -35,7 +33,7 @@ public class StockMarketController {
 
     @PostMapping
     public ResponseEntity<StockMarket> createStockMarket(@RequestBody StockMarket stockMarket) {
-        return new ResponseEntity<>(((CrudRepository<StockMarket, Integer>) stockMarketService).save(stockMarket), HttpStatus.CREATED);
+        return new ResponseEntity<>(((StockMarketRepositories) stockMarketService).save(stockMarket), HttpStatus.CREATED);
     }
     
     
